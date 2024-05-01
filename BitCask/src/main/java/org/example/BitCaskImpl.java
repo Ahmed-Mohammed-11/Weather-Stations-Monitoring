@@ -52,8 +52,13 @@ public class BitCaskImpl implements Bitcask<Integer, String>{
             throw new RuntimeException("Key not found");
 
         ValueMetaData valueMetadata = keyDir.get(key);
-        Path fileToReadPath = Paths.get(fileHandler.getCurrentDirectory().toString(), valueMetadata.fileId);
-        String value = fileHandler.readValue(fileToReadPath, valueMetadata.valuePos);
+        Path fileToReadPath = Paths.get(fileHandler.getCurrentDirectory().toString(), valueMetadata.fileId + ".bitcask");
+        String value = "";
+        try {
+            value = fileHandler.readValue(fileToReadPath, valueMetadata.valuePos);
+        } catch (IOException e) {
+            System.out.println("Could not find file to read...");
+        }
         return value;
     }
 

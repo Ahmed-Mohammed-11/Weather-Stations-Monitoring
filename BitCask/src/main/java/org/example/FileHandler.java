@@ -1,6 +1,10 @@
 package org.example;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -24,8 +28,13 @@ public class FileHandler {
         Files.write(currentFile, bytes, StandardOpenOption.APPEND);
     }
 
-    public String readValue(Path fileToRead, int offset) {
-        return "not implemented";
+    public String readValue(Path fileToRead, int offset) throws IOException {
+        EfficientFileReader fr = new EfficientFileReader(fileToRead.toString(), offset);
+        int keysz = fr.getNextInt();
+        int valsz = fr.getNextInt();
+        int key = fr.getNextInt();
+        String val = new String(fr.getNext(valsz).buffer, StandardCharsets.UTF_8);
+        return val;
     }
 
     public Path getCurrentFile() {

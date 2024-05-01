@@ -20,10 +20,11 @@ public class BitcaskFileEntry {
     public byte[] getBytes() {
         byte[] bytes = ByteBuffer.allocate(4*3 + valuesz).putInt(keysz)
                 .putInt(valuesz).putInt(key).put(value.getBytes(StandardCharsets.UTF_8)).array();
-        System.out.println("writing the following bytes:");
+        System.out.print("writing the following bytes: ");
         for (byte b : bytes) {
             System.out.printf("%x ", b);
         }
+        System.out.println();
 
         return bytes;
     }

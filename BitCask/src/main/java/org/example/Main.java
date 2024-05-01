@@ -11,6 +11,10 @@ public class Main {
 
         }
         b.put(1, "haha");
-
+        b.put(3, "happy");
+        b.get(1);
+        b.put(4, "You will not scare me");
+        b.get(4);
+        b.get(3);
     }
 }
