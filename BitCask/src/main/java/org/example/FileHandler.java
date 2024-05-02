@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 public class FileHandler {
@@ -24,6 +25,7 @@ public class FileHandler {
     public void appendToActiveFile(String s) throws IOException {
         Files.writeString(currentFile, s, StandardOpenOption.APPEND);
     }
+
     public void appendToActiveFile(byte[] bytes) throws IOException {
         Files.write(currentFile, bytes, StandardOpenOption.APPEND);
     }
@@ -37,9 +39,28 @@ public class FileHandler {
         return val;
     }
 
+    public long getSizeOfActiveFile() throws IOException {
+        return Files.size(currentFile);
+    }
+
+    public void createNewActiveFile(int fileId) throws IOException {
+        String newFile = currentDirectory.toString() + '/' + fileId + ".bitcask";
+        Path newFilePath = Path.of(newFile);
+        Files.createFile(newFilePath);
+        setCurrentFile(newFilePath);
+        System.out.printf("Created file name %s\n", getCurrentFile().toString());
+    }
+
+    public int getFileId() {
+        Path currentFile = getCurrentFile();
+        String fileName = currentFile.getFileName().toString();
+        return Integer.parseInt(fileName.substring(0, fileName.indexOf('.')));
+    }
+
     public Path getCurrentFile() {
         return currentFile;
     }
+
 
     public void setCurrentFile(Path currentFile) {
         this.currentFile = currentFile;

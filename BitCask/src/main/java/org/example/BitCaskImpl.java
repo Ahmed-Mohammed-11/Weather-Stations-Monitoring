@@ -16,8 +16,17 @@ public class BitCaskImpl implements Bitcask<Integer, String>{
     private static final String defaultDirectoryName = "Bitcask";
 
     public BitCaskImpl() {
-        keyDir = new HashMap<Integer, ValueMetaData>();
+        initializeLocalVariables();
         sizeThreshold = 1024 * 1024 * 1024; // 1 GB
+    }
+
+    public BitCaskImpl(int sizeThreshold) {
+        initializeLocalVariables();
+        sizeThreshold = sizeThreshold;
+    }
+
+    private void initializeLocalVariables() {
+        keyDir = new HashMap<Integer, ValueMetaData>();
         fileHandler = new FileHandler();
     }
 
@@ -27,20 +36,21 @@ public class BitCaskImpl implements Bitcask<Integer, String>{
         Path currentDirectory = fileHandler.getCurrentDirectory();
 
         if (!Files.isDirectory(currentDirectory))
-            Files.createDirectory(currentDirectory);
+            Files.createDirectories(currentDirectory);
 
         int fileId = 1;
         while(Files.exists(Path.of(currentDirectory.toString()  + '/' + String.valueOf(fileId) + ".bitcask"))) {
             fileId++;
         }
 
+        // no active file found
         if(fileId == 1){
             fileHandler.setCurrentFile(Path.of(currentDirectory.toString(), String.valueOf(fileId) + ".bitcask"));
             Files.createFile(fileHandler.getCurrentFile());
             System.out.printf("Created file name %s\n", fileHandler.getCurrentFile().toString());
         }else {
             // recover keyDir
-            fileHandler.setCurrentFile(Path.of(currentDirectory.toString(), "1.bitcask"));
+            fileHandler.setCurrentFile(Path.of(currentDirectory.toString(), fileId-1 + ".bitcask"));
         }
 
     }
@@ -72,15 +82,29 @@ public class BitCaskImpl implements Bitcask<Integer, String>{
                 fileHandler.appendToActiveFile(entry.getBytes());
                 keyDir.put(key, valueMetadata);
 
+                handleActiveFileExceedThreshold();
+
                 System.out.printf("Updated keyDir with key %s, and value %s\n", key.toString(), valueMetadata.toString());
-                System.out.printf("Updated file %s with value %s", fileHandler.getCurrentFile().toString(), value);
+                System.out.printf("Updated file %s with value %s\n", fileHandler.getCurrentFile().toString(), value);
             } catch (IOException e) {
-                System.out.println("Error opening file...");
+                System.out.println("ERROR: opening file...");
             }
     }
 
+    private void handleActiveFileExceedThreshold() {
+        try {
+            if(fileHandler.getSizeOfActiveFile() >= sizeThreshold) {
+                System.out.printf("Active file size exceeded threshold of %d bytes\n", sizeThreshold);
+                fileHandler.createNewActiveFile(fileHandler.getFileId() + 1);
+                System.out.printf("Created new file %s\n", fileHandler.getCurrentFile().toString());
+            }
+        } catch (IOException e) {
+            System.out.println("ERROR: Could not create new file");
+        }
+    }
+
     private ValueMetaData populateValueMetadata(String value) throws IOException {
-        String fileId = getFileId();
+        String fileId = String.valueOf(fileHandler.getFileId());
         int valueSz = value.length();
         int valuePos = (int) Files.size(fileHandler.getCurrentFile()); // assume that maxSize would not exceed 4GB
         long timestamp = Instant.now().getEpochSecond();
@@ -92,12 +116,6 @@ public class BitCaskImpl implements Bitcask<Integer, String>{
         int keysz = 4;
         int valuesz = value.length();
         return new BitcaskFileEntry(keysz, valuesz, key, value);
-    }
-
-    private String getFileId() {
-        Path currentFile = fileHandler.getCurrentFile();
-        String fileName = currentFile.getFileName().toString();
-        return fileName.substring(0, fileName.indexOf('.'));
     }
 
     public void merge() {
