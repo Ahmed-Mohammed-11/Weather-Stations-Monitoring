@@ -1,0 +1,49 @@
+# can use thing like this but I need different station id for each station
+#services:
+#  station:
+#    image: weather-station
+#    deploy:
+#      mode: replicated
+#      replicas: 10
+version: '3'
+services:
+  station1:
+    image: weather-station
+    environment:
+      - STATION_ID=1
+  station2:
+    image: weather-station
+    environment:
+      - STATION_ID=2
+  station3:
+    image: weather-station
+    environment:
+      - STATION_ID=3
+  station4:
+    image: weather-station
+    environment:
+      - STATION_ID=4
+  station5:
+    image: weather-station
+    environment:
+      - STATION_ID=5
+  station6:
+    image: weather-station
+    environment:
+      - STATION_ID=6
+  station7:
+    image: weather-station
+    environment:
+      - STATION_ID=7
+  station8:
+    image: weather-station
+    environment:
+      - STATION_ID=8
+  station9:
+    image: weather-station
+    environment:
+      - STATION_ID=9
+  station10:
+    image: weather-station
+    environment:
+      - STATION_ID=10

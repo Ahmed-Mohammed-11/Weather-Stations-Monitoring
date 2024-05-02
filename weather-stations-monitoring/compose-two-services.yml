@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  kafka-service:
+    image: apache/kafka:3.7.0
+    ports:
+      - 9092:9092
+  station-service:
+    build: .
+    depends_on:
+      - "kafka-service"
