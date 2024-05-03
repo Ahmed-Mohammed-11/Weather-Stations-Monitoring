@@ -1,5 +1,7 @@
 package org.example;
 
+import com.sun.jdi.Value;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,13 +9,19 @@ import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class BitCaskImpl implements Bitcask<Integer, String>{
+// TODO Cross-cutting concerns (logging)
+// TODO Configuration files
+// TODO Dockerize the library
+// TODO what if a reader reads the keydir while it is being written?
+public class BitCaskImpl implements Bitcask<Integer, String> {
     private Map<Integer, ValueMetaData> keyDir;
     private int sizeThreshold;
     private FileHandler fileHandler;
 
     private static final String defaultDirectoryName = "Bitcask";
+    private static final int maxNumberOfFiles = 5;
 
     public BitCaskImpl() {
         initializeLocalVariables();
@@ -22,11 +30,11 @@ public class BitCaskImpl implements Bitcask<Integer, String>{
 
     public BitCaskImpl(int sizeThreshold) {
         initializeLocalVariables();
-        sizeThreshold = sizeThreshold;
+        this.sizeThreshold = sizeThreshold;
     }
 
     private void initializeLocalVariables() {
-        keyDir = new HashMap<Integer, ValueMetaData>();
+        keyDir = new ConcurrentHashMap<>();
         fileHandler = new FileHandler();
     }
 
@@ -118,8 +126,22 @@ public class BitCaskImpl implements Bitcask<Integer, String>{
         return new BitcaskFileEntry(keysz, valuesz, key, value);
     }
 
-    public void merge() {
+    // TODO make sure this is a background thread
+    public synchronized void merge() {
+        // iterate over KeyDir and write record which are not in the active one in another file
+        // generate a hint file for that merged file
+        // update the keyDir with the new file
+
+        generateMergedFiles();
+
         System.out.println("Merging data files");
+    }
+
+    private void generateMergedFiles() {
+
+        // you need to write the value in a new file
+        // you need to save the metadata to use it in hint file
+        // you need to update keydir
     }
 
     public void close() {
