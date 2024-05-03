@@ -116,7 +116,6 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
                 if(fileHandler.getActiveFileId() > maxNumberOfFiles){
                      Thread thread = new Thread(() -> merge());
                      thread.start();
-//                    merge();
                 }
 
                 //System.out.printf("Created new file %s\n", fileHandler.getCurrentFile().toString());
@@ -145,19 +144,12 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
     public synchronized void merge() {
         int activeFileId = fileHandler.getActiveFileId();
         //System.out.println("Merging data files with active id: " + activeFileId);
-        // You need to save the whole metadata (new) including offset of value in new file
-        // you basically need to generate a new keydir and then merge it in the end
-        // you need to take value and write it immedietly in file because values may be very large
-        // generate a hint file for that merged file
-        // update the keyDir with the new file
 
-
-        // what if you fail during deletion, you would need to ensure that no one reads the old files
         Map<Integer, ValueMetaData> newKeyDir;
         try{
             newKeyDir = generateMergedFile();
         } catch (IOException e){
-            //rollback
+            // rollback
             System.out.println("ERROR: could not merge files");
             System.out.println(e);
             return;
