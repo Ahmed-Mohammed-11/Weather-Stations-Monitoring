@@ -1,13 +1,9 @@
 package org.example;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 public class FileHandler {
@@ -30,6 +26,10 @@ public class FileHandler {
         Files.write(currentFile, bytes, StandardOpenOption.APPEND);
     }
 
+    public void appendToFile(Path file, byte[] bytes) throws IOException {
+        Files.write(file, bytes, StandardOpenOption.APPEND);
+    }
+
     public String readValue(Path fileToRead, int offset) throws IOException {
         EfficientFileReader fr = new EfficientFileReader(fileToRead.toString(), offset);
         int keysz = fr.getNextInt();
@@ -43,15 +43,32 @@ public class FileHandler {
         return Files.size(currentFile);
     }
 
+    public long getSizeOfFile(Path file) throws IOException {
+        return Files.size(file);
+    }
+
     public void createNewActiveFile(int fileId) throws IOException {
+        setCurrentFile(createNewFile(fileId));
+        System.out.printf("Created active file with name %s\n", getCurrentFile().toString());
+    }
+
+    public Path createNewFile(int fileId) throws IOException {
         String newFile = currentDirectory.toString() + '/' + fileId + ".bitcask";
         Path newFilePath = Path.of(newFile);
         Files.createFile(newFilePath);
-        setCurrentFile(newFilePath);
-        System.out.printf("Created file name %s\n", getCurrentFile().toString());
+        System.out.printf("Created file with name %s\n", getCurrentFile().toString());
+        return newFilePath;
     }
 
-    public int getFileId() {
+    public Path createNewFile(String filename) throws IOException {
+        String newFile = currentDirectory.toString() + '/' + filename;
+        Path newFilePath = Path.of(newFile);
+        Files.createFile(newFilePath);
+        System.out.printf("Created file with name %s\n", getCurrentFile().toString());
+        return newFilePath;
+    }
+
+    public int getActiveFileId() {
         Path currentFile = getCurrentFile();
         String fileName = currentFile.getFileName().toString();
         return Integer.parseInt(fileName.substring(0, fileName.indexOf('.')));

@@ -1,5 +1,7 @@
 package org.example;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.Instant;
 
@@ -14,6 +16,15 @@ public class ValueMetaData {
         this.valueSz = valueSz;
         this.valuePos = valuePos;
         this.timestamp = timestamp;
+    }
+
+    public byte[] getBytes() {
+
+        return ByteBuffer.allocate(4*2 + fileId.length() + 8)
+                .put(fileId.getBytes(StandardCharsets.UTF_8))
+                .putInt(valueSz)
+                .putInt(valuePos)
+                .putLong(timestamp).array();
     }
 
     @Override

@@ -26,5 +26,6 @@ public class Main {
         b.put(3, "happy");
         b.put(3, "happy");
         System.out.println(b.get(3));
+        b.merge();
     }
 }
