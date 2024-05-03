@@ -55,4 +55,45 @@ public class EfficientFileReader {
         return num;
     }
 
+    public long getNextLong() {
+        int read;
+        byte[] buf;
+        try {
+            buf = new byte[8];
+            read = bufferedStream.read(buf, 0, buf.length);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return getLong(buf);
+    }
+
+    private long getLong(byte[] buf) {
+        int num = 0;
+        for (int i = 0; i < 8; i++) {
+            num <<= 8;
+            num |= (buf[i] & 0xFF);
+        }
+        return num;
+    }
+
+
+    public boolean hasNext() {
+        try {
+            return bufferedStream.available() > 0;
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void skipNumberOfSteps(int steps) {
+        try {
+            bufferedStream.skip(steps);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
 }

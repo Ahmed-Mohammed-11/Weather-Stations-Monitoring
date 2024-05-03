@@ -74,6 +74,10 @@ public class FileHandler {
         return Integer.parseInt(fileName.substring(0, fileName.indexOf('.')));
     }
 
+    public int getFileId(String fileName){
+        return Integer.parseInt(fileName.substring(0, fileName.indexOf('.')));
+    }
+
     public Path getCurrentFile() {
         return currentFile;
     }

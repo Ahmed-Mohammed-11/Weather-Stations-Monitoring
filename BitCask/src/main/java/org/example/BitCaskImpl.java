@@ -22,6 +22,7 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
     private Map<Integer, ValueMetaData> keyDir;
     private int sizeThreshold;
     private FileHandler fileHandler;
+    private RecoverBitcask recoverBitcask;
 
     private static final String defaultDirectoryName = "Bitcask";
     private static final int maxNumberOfFiles = 100;
@@ -39,6 +40,7 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
     private void initializeLocalVariables() {
         keyDir = new ConcurrentHashMap<>();
         fileHandler = new FileHandler();
+        recoverBitcask = new RecoverBitcask();
     }
 
     public void open(String dirName) throws IOException {
@@ -61,6 +63,7 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
             //System.out.printf("Created file name %s\n", fileHandler.getCurrentFile().toString());
         }else {
             // recover keyDir
+            keyDir = recoverBitcask.recoverKeyDir(currentDirectory);
             fileHandler.setCurrentFile(Path.of(currentDirectory.toString(), fileId-1 + ".bitcask"));
         }
 
@@ -140,7 +143,6 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
         return new BitcaskFileEntry(keysz, valuesz, key, value);
     }
 
-    // TODO make sure this is a background thread
     public synchronized void merge() {
         int activeFileId = fileHandler.getActiveFileId();
         //System.out.println("Merging data files with active id: " + activeFileId);
@@ -171,7 +173,6 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
             }
         }
         synchronized (keyDir){
-            // delete all the old files.
             // TODO change above code to reflect that we may not begin from 1
             // update active file id
             try {
@@ -218,6 +219,8 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
             int newOffset = (int)fileHandler.getSizeOfFile(newFilePath);
             ValueMetaData newMetaData = new ValueMetaData(String.valueOf(newFileId), valueMetaData.valueSz,
                     newOffset, valueMetaData.timestamp);
+            HintFileData hintFileData =
+                    new HintFileData(4, valueMetaData.valueSz, newOffset, valueMetaData.timestamp, key);
 
             // write the new value in a new file
             String value = get(key);
@@ -229,7 +232,7 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
 
             // TODO we dont need to store the fileid in the hint file
             // write that record in the hint file
-            fileHandler.appendToFile(hintFilePath, newMetaData.getBytes());
+            fileHandler.appendToFile(hintFilePath, hintFileData.getBytes());
         }
         return newKeyDir;
     }
