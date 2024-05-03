@@ -49,14 +49,14 @@ public class FileHandler {
 
     public void createNewActiveFile(int fileId) throws IOException {
         setCurrentFile(createNewFile(fileId));
-        System.out.printf("Created active file with name %s\n", getCurrentFile().toString());
+        //System.out.printf("Created active file with name %s\n", getCurrentFile().toString());
     }
 
     public Path createNewFile(int fileId) throws IOException {
         String newFile = currentDirectory.toString() + '/' + fileId + ".bitcask";
         Path newFilePath = Path.of(newFile);
         Files.createFile(newFilePath);
-        System.out.printf("Created file with name %s\n", getCurrentFile().toString());
+        //System.out.printf("Created file with name %s\n", getCurrentFile().toString());
         return newFilePath;
     }
 
@@ -64,7 +64,7 @@ public class FileHandler {
         String newFile = currentDirectory.toString() + '/' + filename;
         Path newFilePath = Path.of(newFile);
         Files.createFile(newFilePath);
-        System.out.printf("Created file with name %s\n", getCurrentFile().toString());
+        //System.out.printf("Created file with name %s\n", getCurrentFile().toString());
         return newFilePath;
     }
 

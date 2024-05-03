@@ -63,6 +63,20 @@ class BitCaskImplTest {
         assertEquals("You were not thinking that I will not do it", b.get(4));
     }
     @Test
-    void put() {
+    void manyRequestTest(){
+        BitCaskImpl b = new BitCaskImpl(10000);
+        int x = (int)1e6;
+        try {
+            b.open("src/test/java/org/example/testThreads");
+        } catch (IOException e) {
+
+        }
+        while(x > 0){
+            b.put(1, "test1");
+            b.put(2, "el ta3b");
+            x -= 1;
+            assertEquals("test1", b.get(1));
+            assertEquals("el ta3b", b.get(2));
+        }
     }
 }
