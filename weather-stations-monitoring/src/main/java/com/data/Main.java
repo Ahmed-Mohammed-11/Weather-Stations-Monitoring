@@ -6,7 +6,6 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import java.util.Properties;
 
 import static com.data.constants.KafkaProps.*;
-import static com.data.constants.KafkaProps.TOPIC;
 
 public class Main {
     private static Properties getProperties() {
@@ -19,10 +18,16 @@ public class Main {
 
     public static void main(String[] args) {
         Properties props = getProperties();
-        KafkaProducer<String, String> producer = new KafkaProducer<>(props);
-        String message = "hi ahmed this is kafka test from main";
-        ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC, message);
-        producer.send(record);
-        producer.close();
+        try (KafkaProducer<String, String> producer = new KafkaProducer<>(props)) {
+            String message = "Hi osama ! it is me a Kafka !";
+            int i = 0;
+            while(true) {
+                producer.send(new ProducerRecord<>(TOPIC, null, message + " " + i++));
+                System.out.println("Done!");
+            }
+        }
     }
 }
+
+//  kafka-console-consumer.sh --topic quickstart-events --bootstrap-server localhost:9092 --from-beginning
+//  kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092
