@@ -1,8 +1,7 @@
 version: '3'
-#
-#networks:
-#  app-tier:
-#    driver: bridge
+networks:
+  app-tier:
+    driver: bridge
 
 services:
   kafka:
@@ -12,8 +11,8 @@ services:
     ports:
       - "9092:9092"
       - "9094:9094"
-#    networks:
-#      - app-tier
+    networks:
+      - app-tier
     environment:
       - KAFKA_ENABLE_KRAFT=yes
       - KAFKA_CFG_NODE_ID=0
@@ -24,9 +23,23 @@ services:
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:2181
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - ALLOW_PLAINTEXT_LISTENER=yes
-
-#      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
       - BITNAMI_DEBUG=yes
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
+  producer:
+    restart: always
+    image: "weather-station:latest"
+    networks:
+      - app-tier
+    depends_on:
+      - kafka
+  consumer:
+    restart: always
+    image: "central-station:latest"
+    networks:
+      - app-tier
+    depends_on:
+      - producer
+
 #      - KAFKA_CFG_NUM_PARTITIONS=2
 #    volumes:
 #       - ./kafka_data:/bitnami/kafka

@@ -1,10 +1,3 @@
-# can use thing like this but I need different station id for each station
-#services:
-#  station:
-#    image: weather-station
-#    deploy:
-#      mode: replicated
-#      replicas: 10
 version: '3'
 services:
   station1:
@@ -47,3 +40,11 @@ services:
     image: weather-station
     environment:
       - STATION_ID=10
+
+# can use thing like this, but I need different station id for each station
+#services:
+#  station:
+#    image: weather-station
+#    deploy:
+#      mode: replicated
+#      replicas: 10

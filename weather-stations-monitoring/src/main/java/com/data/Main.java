@@ -6,6 +6,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import java.util.Properties;
 
 import static com.data.constants.KafkaProps.*;
+import static org.apache.kafka.common.utils.Utils.sleep;
 
 public class Main {
     private static Properties getProperties() {
@@ -24,6 +25,7 @@ public class Main {
             while(true) {
                 producer.send(new ProducerRecord<>(TOPIC, null, message + " " + i++));
                 System.out.println("Done!");
+                sleep(200);
             }
         }
     }
