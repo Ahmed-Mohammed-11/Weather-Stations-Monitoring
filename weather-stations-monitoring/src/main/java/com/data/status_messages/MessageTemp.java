@@ -1,23 +1,25 @@
 package com.data.status_messages;
 
 public class MessageTemp {
-    int station_id;
-    long s_no;
+    int stationId;
+    long seqNo;
     String status;
+    long timestamp;
     Weather weather;
 
     MessageTemp(MessageBuilder builder) {
-        this.station_id = builder.station_id;
-        this.s_no = builder.s_no;
+        this.stationId = builder.station_id;
+        this.seqNo = builder.s_no;
         this.status = builder.status;
+        this.timestamp = builder.timestamp;
         this.weather = builder.weather;
     }
 
     @Override
     public String toString() {
         return "MessageTemp{" +
-                "station_id=" + station_id +
-                ", s_no=" + s_no +
+                "station_id=" + stationId +
+                ", seq_no=" + seqNo +
                 ", status='" + status + '\'' +
                 ", weather=" + weather.humidity + ", " + weather.temp + ", " + weather.wind_speed +
                 '}';

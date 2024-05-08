@@ -37,24 +37,30 @@ public class Main {
         Properties props = getProperties();
 
         try (KafkaProducer<String, String> producer = new KafkaProducer<>(props)) {
-            long startTime = System.currentTimeMillis();
+            long startTime;
             long timeLeft;
             while (true) {
+                startTime = System.currentTimeMillis();
                 MessageBuilder messageBuilder = new MessageBuilder();
-                messageBuilder.setStation_id(stationId);
-                messageBuilder.setS_no(seqNo++);
+                messageBuilder.setStationId(stationId);
+                messageBuilder.setSeqNo(seqNo++);
+                messageBuilder.setTimestamp(System.currentTimeMillis());
                 messageBuilder.setStatus(getStatus());
                 messageBuilder.setWeather(new Weather(
                         random.nextInt(HUMIDITY_BOUND),
-                        random.nextInt(TEMPERATURE_BOUND),
+                        random.nextInt(TEMPERATURE_LOWER_BOUND, TEMPERATURE_UPPER_BOUND),
                         random.nextInt(WIND_SPEED_BOUND)));
                 MessageTemp statusMessage = messageBuilder.build();
-                if (random.nextInt(GENERATE_BOUND) < 10) continue;
                 timeLeft = 1000 - (System.currentTimeMillis() - startTime);
-                if (timeLeft > 0) sleep(timeLeft);
+                if (random.nextInt(GENERATE_BOUND) < 10) {
+                    sleep(timeLeft);
+                    continue;
+                }
                 ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC, statusMessage.toString());
                 producer.send(record);
-                startTime = System.currentTimeMillis();
+                timeLeft = 1000 - (System.currentTimeMillis() - startTime);
+                System.out.println(timeLeft);
+                sleep(timeLeft);
             }
         }
     }
