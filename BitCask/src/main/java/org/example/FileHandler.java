@@ -32,6 +32,7 @@ public class FileHandler {
 
     public String readValue(Path fileToRead, int offset) throws IOException {
         EfficientFileReader fr = new EfficientFileReader(fileToRead.toString(), offset);
+        long timestamp = fr.getNextLong();
         int keysz = fr.getNextInt();
         int valsz = fr.getNextInt();
         int key = fr.getNextInt();

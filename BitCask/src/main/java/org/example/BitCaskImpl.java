@@ -25,7 +25,7 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
     private RecoverBitcask recoverBitcask;
 
     private static final String defaultDirectoryName = "Bitcask";
-    private static final int maxNumberOfFiles = 100;
+    private static final int maxNumberOfFiles = 5;
 
     public BitCaskImpl() {
         initializeLocalVariables();
@@ -81,7 +81,7 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
         try {
             value = fileHandler.readValue(fileToReadPath, valueMetadata.valuePos);
         } catch (IOException e) {
-            //System.out.println("Could not find file to read...");
+//            System.out.println(e);
         }
         return value;
     }
@@ -101,8 +101,8 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
                 //System.out.printf("Updated keyDir with key %s, and value %s\n", key.toString(), keyDir.get(key).toString());
                 //System.out.printf("Updated file %s with value %s\n", fileHandler.getCurrentFile().toString(), value);
             } catch (IOException e) {
-                System.out.println("ERROR: opening file...");
-                System.out.println(e);
+//                System.out.println("ERROR: opening file...");
+//                System.out.println(e);
             }
     }
 
@@ -124,7 +124,7 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
                 //System.out.printf("Created new file %s\n", fileHandler.getCurrentFile().toString());
             }
         } catch (IOException e) {
-            System.out.println("ERROR: Could not create new file");
+//            System.out.println("ERROR: Could not create new file");
         }
     }
 
@@ -140,7 +140,8 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
     private BitcaskFileEntry populateFileEntry(Integer key, String value) {
         int keysz = 4;
         int valuesz = value.length();
-        return new BitcaskFileEntry(keysz, valuesz, key, value);
+        long timestamp = Instant.now().getEpochSecond();
+        return new BitcaskFileEntry(timestamp, keysz, valuesz, key, value);
     }
 
     public synchronized void merge() {
@@ -152,8 +153,8 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
             newKeyDir = generateMergedFile();
         } catch (IOException e){
             // rollback
-            System.out.println("ERROR: could not merge files");
-            System.out.println(e);
+//            System.out.println("ERROR: could not merge files");
+//            System.out.println(e);
             return;
         }
         HashSet<String> set = new HashSet();
@@ -169,21 +170,22 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
                 //System.out.println("Deleted file " + i);
                 Files.delete(Path.of(fileHandler.getCurrentDirectory().toString() + '/' + i + ".bitcask.hint"));
             } catch (IOException e) {
-                System.out.println(e);
+//                System.out.println(e);
             }
         }
+
+        // update active file id
+        try {
+            // Move (rename) the file
+            Path mergedFilePath = Path.of(fileHandler.getCurrentDirectory().toString() + "/merged.bitcask");
+            Path targetPath = Path.of(fileHandler.getCurrentDirectory().toString() + '/' + 1 + ".bitcask");
+            Files.move(mergedFilePath, targetPath, StandardCopyOption.ATOMIC_MOVE);
+            // System.out.println("File renamed successfully.");
+        } catch (IOException e) {
+//            System.err.println("Error occurred: " + e);
+        }
+
         synchronized (keyDir){
-            // TODO change above code to reflect that we may not begin from 1
-            // update active file id
-            try {
-                // Move (rename) the file
-                Path mergedFilePath = Path.of(fileHandler.getCurrentDirectory().toString() + "/merged.bitcask");
-                Path targetPath = Path.of(fileHandler.getCurrentDirectory().toString() + '/' + 1 + ".bitcask");
-                Files.move(mergedFilePath, targetPath, StandardCopyOption.ATOMIC_MOVE);
-                //System.out.println("File renamed successfully.");
-            } catch (IOException e) {
-                System.err.println("Error occurred: " + e);
-            }
             mergeKeyDir(newKeyDir, keyDir);
             fileHandler.setCurrentFile(Path.of(fileHandler.getCurrentDirectory().toString() + '/' + 1 + ".bitcask"));
         }

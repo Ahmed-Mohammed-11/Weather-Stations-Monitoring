@@ -27,6 +27,10 @@ public class ValueMetaData {
                 .putLong(timestamp).array();
     }
 
+    public int getNumberOfBytes() {
+        return 4*2 + fileId.length() + 8;
+    }
+
     @Override
     public String toString() {
         return "ValueMetaData{" +

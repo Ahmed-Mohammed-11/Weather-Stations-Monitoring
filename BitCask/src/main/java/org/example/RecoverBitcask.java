@@ -4,31 +4,30 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RecoverBitcask {
     FileHandler fileHandler = new FileHandler();
 
+    // TODO use timestamp to know latest message.
     public Map<Integer, ValueMetaData> recoverKeyDir(Path currentDirectory) throws IOException {
         Map<Integer, ValueMetaData> keyDir = new ConcurrentHashMap<>();
         List<String> fileNames = getAllFileNames(currentDirectory);
 
-        HashSet<Integer> fileIds = new HashSet<>();
+        TreeSet<Integer> fileIds = new TreeSet<>();
         fileNames.forEach((fileName) -> {
-            fileIds.add(fileHandler.getFileId(fileName));
+            if(!Objects.equals(fileName, "merged.bitcask"))
+                fileIds.add(fileHandler.getFileId(fileName));
         });
 
         for(Integer fileId: fileIds){
             Path hintFilePath = Path.of(currentDirectory.toString(), fileId + ".hint");
-            if(Files.exists(hintFilePath)){
+            if(Files.exists(hintFilePath))
                 recoverFromHintFile(hintFilePath, String.valueOf(fileId), keyDir);
-            }else{
+            else
                 recoverFromDataFile(currentDirectory, String.valueOf(fileId), keyDir);
-            }
+
         }
         return keyDir;
     }
@@ -41,18 +40,26 @@ public class RecoverBitcask {
         return fileNames;
     }
 
-    //TODO You really dont need the timestamp
+    // TODO Handle currentPos overflow
     private void recoverFromDataFile(Path currentDirectory, String fileId, Map<Integer, ValueMetaData> keyDir) throws IOException {
         Path dataFilePath = Path.of(currentDirectory.toString(), fileId + ".bitcask");
         EfficientFileReader fr = new EfficientFileReader(dataFilePath.toString(), 0);
         int currentPos = 0;
+
         while (fr.hasNext()) {
+            long timestamp = fr.getNextLong();
             int keySize = fr.getNextInt();
             int valueSz = fr.getNextInt();
             int key = fr.getNextInt();
-            keyDir.put(key, new ValueMetaData(fileId, valueSz, currentPos, Instant.now().getEpochSecond()));
-            fr.skipNumberOfSteps(valueSz);
-            currentPos += 4 + 4 + 4 + valueSz;
+
+            if (keyDir.get(key) == null || keyDir.get(key) != null && keyDir.get(key).timestamp <= timestamp) {
+                keyDir.put(key, new ValueMetaData(fileId, valueSz, currentPos, timestamp));
+            }
+            long sk = fr.skipNumberOfSteps(valueSz);
+            if(sk != valueSz)
+                sk  = fr.skipNumberOfSteps(valueSz - (int)sk);
+
+            currentPos += new BitcaskFileEntry(timestamp, keySize, valueSz, key, "").getNumberOfBytes();
         }
     }
 

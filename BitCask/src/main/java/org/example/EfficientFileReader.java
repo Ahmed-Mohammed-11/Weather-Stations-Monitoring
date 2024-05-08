@@ -80,6 +80,7 @@ public class EfficientFileReader {
 
     public boolean hasNext() {
         try {
+            System.out.println(bufferedStream.available());
             return bufferedStream.available() > 0;
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -87,9 +88,9 @@ public class EfficientFileReader {
         }
     }
 
-    public void skipNumberOfSteps(int steps) {
+    public long skipNumberOfSteps(int steps) {
         try {
-            bufferedStream.skip(steps);
+            return bufferedStream.skip(steps);
         } catch (IOException e) {
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
