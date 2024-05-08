@@ -80,7 +80,6 @@ public class EfficientFileReader {
 
     public boolean hasNext() {
         try {
-            System.out.println(bufferedStream.available());
             return bufferedStream.available() > 0;
         } catch (IOException e) {
             System.out.println(e.getMessage());
