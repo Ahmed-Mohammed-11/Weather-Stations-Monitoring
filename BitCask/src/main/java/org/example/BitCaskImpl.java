@@ -1,8 +1,5 @@
 package org.example;
 
-import com.sun.jdi.Value;
-
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,24 +14,25 @@ import java.util.concurrent.ConcurrentHashMap;
 // TODO Cross-cutting concerns (logging)
 // TODO Configuration files
 // TODO Dockerize the library
-// TODO what if a reader reads the keydir while it is being written?
 public class BitCaskImpl implements Bitcask<Integer, String> {
     private Map<Integer, ValueMetaData> keyDir;
-    private int sizeThreshold;
+    private final int sizeThreshold;
+    private final int maxNumberOfFiles;
     private FileHandler fileHandler;
     private RecoverBitcask recoverBitcask;
 
     private static final String defaultDirectoryName = "Bitcask";
-    private static final int maxNumberOfFiles = 5;
 
     public BitCaskImpl() {
         initializeLocalVariables();
         sizeThreshold = 1024 * 1024 * 1024; // 1 GB
+        maxNumberOfFiles = 5;
     }
 
-    public BitCaskImpl(int sizeThreshold) {
+    public BitCaskImpl(int sizeThreshold, int maxNumberOfFiles) {
         initializeLocalVariables();
         this.sizeThreshold = sizeThreshold;
+        this.maxNumberOfFiles = maxNumberOfFiles;
     }
 
     private void initializeLocalVariables() {
@@ -51,10 +49,7 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
         if (!Files.isDirectory(currentDirectory))
             Files.createDirectories(currentDirectory);
 
-        int fileId = 1;
-        while(Files.exists(Path.of(currentDirectory.toString()  + '/' + fileId + ".bitcask"))) {
-            fileId++;
-        }
+        int fileId = getLatestFileId(currentDirectory);
 
         // no active file found
         if(fileId == 1){
@@ -67,6 +62,14 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
             fileHandler.setCurrentFile(Path.of(currentDirectory.toString(), fileId-1 + ".bitcask"));
         }
 
+    }
+
+    private int getLatestFileId(Path currentDirectory) {
+        int fileId = 1;
+        while(Files.exists(Path.of(currentDirectory.toString()  + '/' + fileId + ".bitcask"))) {
+            fileId++;
+        }
+        return fileId;
     }
 
     public String get(Integer key) {
@@ -86,8 +89,6 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
         return value;
     }
 
-
-    // TODO make it atomic
     public synchronized void put(Integer key, String value) {
             try {
                 // TODO handle timestamp when the message is sent
@@ -98,8 +99,8 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
 
                 handleActiveFileExceedThreshold();
 
-                //System.out.printf("Updated keyDir with key %s, and value %s\n", key.toString(), keyDir.get(key).toString());
-                //System.out.printf("Updated file %s with value %s\n", fileHandler.getCurrentFile().toString(), value);
+                // System.out.printf("Updated keyDir with key %s, and value %s\n", key.toString(), keyDir.get(key).toString());
+                // System.out.printf("Updated file %s with value %s\n", fileHandler.getCurrentFile().toString(), value);
             } catch (IOException e) {
 //                System.out.println("ERROR: opening file...");
 //                System.out.println(e);
@@ -109,7 +110,7 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
     private void handleActiveFileExceedThreshold() {
         try {
             if(fileHandler.getSizeOfActiveFile() >= sizeThreshold) {
-                //System.out.printf("Active file size exceeded threshold of %d bytes\n", sizeThreshold);
+                // System.out.printf("Active file size exceeded threshold of %d bytes\n", sizeThreshold);
                 int newFileId = fileHandler.getActiveFileId() + 1;
                 while(Files.exists(Path.of(fileHandler.getCurrentDirectory().toString()  + '/' + newFileId + ".bitcask"))){
                     newFileId++;
@@ -157,7 +158,7 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
 //            System.out.println(e);
             return;
         }
-        HashSet<String> set = new HashSet();
+        HashSet<String> set = new HashSet<>();
         for (Map.Entry<Integer, ValueMetaData> entry : keyDir.entrySet()) {
             set.add(entry.getValue().fileId);
         }
@@ -192,7 +193,6 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
     }
 
     private synchronized Map<Integer, ValueMetaData> generateMergedFile() throws IOException {
-
         // init a new keydir
         Map<Integer, ValueMetaData> newKeyDir = new HashMap<>();
 
@@ -211,13 +211,13 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
         for (Map.Entry<Integer, ValueMetaData> entry : keyDir.entrySet()) {
             Integer key = entry.getKey();
             ValueMetaData valueMetaData = entry.getValue();
+
             // process records which are not in the active file
             if(valueMetaData.fileId.equals(String.valueOf(fileHandler.getActiveFileId()))) {
                 continue;
             }
 
             // generate new metadata for that record
-            // TODO change value size to long, or merge into multiple files
             int newOffset = (int)fileHandler.getSizeOfFile(newFilePath);
             ValueMetaData newMetaData = new ValueMetaData(String.valueOf(newFileId), valueMetaData.valueSz,
                     newOffset, valueMetaData.timestamp);
@@ -232,7 +232,6 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
             // update the keyDir with the new metadata
             newKeyDir.put(key, newMetaData);
 
-            // TODO we dont need to store the fileid in the hint file
             // write that record in the hint file
             fileHandler.appendToFile(hintFilePath, hintFileData.getBytes());
         }

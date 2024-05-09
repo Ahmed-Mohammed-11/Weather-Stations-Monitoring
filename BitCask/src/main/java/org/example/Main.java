@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        Bitcask b = new BitCaskImpl(1024*1024);
+        Bitcask b = new BitCaskImpl(1024*1024, 5);
         try {
             b.open("src/main/resources");
         } catch (IOException e) {
@@ -22,14 +22,14 @@ public class Main {
                 "\"wind_speed\": 13, // Integer km/h\n" +
                 "}\n" +
                 "}";
-        int j = 1;
-        for (int i = 0; i < 1e6; i++){
-            b.put(j, m);
-            j++;
-            j%=11;
-            if(j==0)
-                j=1;
-        }
+//        int j = 1;
+//        for (int i = 0; i < 1e6; i++){
+//            b.put(j, m);
+//            j++;
+//            j%=11;
+//            if(j==0)
+//                j=1;
+//        }
         System.out.println(b.get(1));
         System.out.println(b.get(2));
         System.out.println(b.get(3));

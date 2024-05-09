@@ -40,7 +40,6 @@ public class RecoverBitcask {
         return fileNames;
     }
 
-    // TODO Handle currentPos overflow
     private void recoverFromDataFile(Path currentDirectory, String fileId, Map<Integer, ValueMetaData> keyDir) throws IOException {
         Path dataFilePath = Path.of(currentDirectory.toString(), fileId + ".bitcask");
         EfficientFileReader fr = new EfficientFileReader(dataFilePath.toString(), 0);
