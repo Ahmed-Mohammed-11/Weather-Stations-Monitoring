@@ -28,11 +28,10 @@ public class Main {
         Properties props = getProperties();
         try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props)) {
             consumer.subscribe(Collections.singleton(TOPIC));
-
             while (true) {
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
                 for (ConsumerRecord<String, String> record : records) {
-                    System.out.println("Received --->" + record.value() + " " + record.key());
+                    System.out.println("Received ---> " + record.value() + " " + record.timestamp());
                 }
             }
         }

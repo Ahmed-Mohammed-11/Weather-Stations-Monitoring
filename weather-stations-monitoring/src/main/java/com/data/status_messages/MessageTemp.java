@@ -19,6 +19,7 @@ public class MessageTemp {
     public String toString() {
         return "MessageTemp{" +
                 "station_id=" + stationId +
+                ", timestamp=" + timestamp +
                 ", seq_no=" + seqNo +
                 ", status='" + status + '\'' +
                 ", weather=" + weather.humidity + ", " + weather.temp + ", " + weather.wind_speed +
