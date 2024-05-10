@@ -46,7 +46,7 @@ class BitCaskImplTest {
 
     @Test
     void testMultipleFiles_ShouldCreateNewFiles() {
-        BitCaskImpl b = new BitCaskImpl(1);
+        BitCaskImpl b = new BitCaskImpl(1, 100);
         try {
             b.open("src/test/java/org/example/test3");
         } catch (IOException e) {
@@ -65,7 +65,7 @@ class BitCaskImplTest {
     }
     @Test
     void manyRequestTest(){
-        BitCaskImpl b = new BitCaskImpl(10000);
+        BitCaskImpl b = new BitCaskImpl(10000, 10);
         int x = (int)1e6;
         try {
             b.open("src/test/java/org/example/testThreads");
