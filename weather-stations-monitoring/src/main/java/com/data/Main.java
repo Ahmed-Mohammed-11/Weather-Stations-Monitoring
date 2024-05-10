@@ -32,7 +32,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        int stationId = Integer.parseInt(args[0]);
+        int stationId = 1;
         int seqNo = 1;
         Properties props = getProperties();
 
@@ -57,7 +57,7 @@ public class Main {
                     continue;
                 }
                 System.out.println("before -> " + statusMessage.toString());
-                ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC, statusMessage.toString());
+                ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC, String.valueOf(stationId), statusMessage.toString());
                 producer.send(record);
                 System.out.println("after -> " + statusMessage.toString());
 //                timeLeft = 1000 - (System.currentTimeMillis() - startTime);
