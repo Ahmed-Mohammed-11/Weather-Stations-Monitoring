@@ -17,12 +17,16 @@ public class MessageTemp {
 
     @Override
     public String toString() {
-        return "MessageTemp{" +
-                "station_id=" + stationId +
-                ", timestamp=" + timestamp +
-                ", seq_no=" + seqNo +
-                ", status='" + status + '\'' +
-                ", weather=" + weather.humidity + ", " + weather.temp + ", " + weather.wind_speed +
+        return "{" +
+                "\"station_id\": " + stationId +  ",\n" +
+                "\"status_timestamp\": " + timestamp + ",\n" +
+                "\"s_no\": " + seqNo + ",\n" +
+                "\"battery_status\": \"" + status + "\",\n" +
+                "\"weather\": {" + "\n" +
+                        "\"humidity\": "+ weather.humidity + ",\n" +
+                        "\"temperature\": "+ weather.temp + ",\n" +
+                        "\"wind_speed\": "+ weather.wind_speed + ",\n" +
+                    "}" +
                 '}';
     }
 }
