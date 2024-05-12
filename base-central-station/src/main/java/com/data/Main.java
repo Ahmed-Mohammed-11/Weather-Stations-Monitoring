@@ -15,7 +15,7 @@ import java.util.Properties;
 import static com.data.constants.KafkaProps.*;
 
 public class Main {
-    private static final String outputPath = "/home/osama/Documents/DDIA_Project/Weather-Stations-Monitoring/base-central-station/src/main/java/com/data/Parquets/";
+    private static final String outputPath = "base-central-station/src/main/java/com/data/Parquets/";
 
     private static Properties getProperties() {
         Properties props = new Properties();
@@ -23,7 +23,7 @@ public class Main {
         props.put("group.id", GROUP_ID);
         props.put("key.deserializer", KEY_DESERIALIZER);
         props.put("value.deserializer", VALUE_DESERIALIZER);
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
         return props;
     }
