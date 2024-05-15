@@ -92,21 +92,32 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
     }
 
     public synchronized void put(Integer key, String value) {
-            try {
-                // TODO handle timestamp when the message is sent
-                ValueMetaData valueMetadata = populateValueMetadata(value);
-                BitcaskFileEntry entry = populateFileEntry(key, value);
-                fileHandler.appendToActiveFile(entry.getBytes());
-                keyDir.put(key, valueMetadata);
+        prepareDataAndPut(key, value, Instant.now().getEpochSecond());
+    }
 
-                handleActiveFileExceedThreshold();
+    public synchronized  void put(Integer key, String value, long timestamp) {
+        if(this.keyDir.get(key).timestamp > timestamp)
+            return;
 
-                // System.out.printf("Updated keyDir with key %s, and value %s\n", key.toString(), keyDir.get(key).toString());
-                // System.out.printf("Updated file %s with value %s\n", fileHandler.getCurrentFile().toString(), value);
-            } catch (IOException e) {
+        prepareDataAndPut(key, value, timestamp);
+    }
+
+    private synchronized void prepareDataAndPut(Integer key, String value, long timestamp) {
+        try {
+            // TODO handle timestamp when the message is sent
+            ValueMetaData valueMetadata = populateValueMetadata(value, timestamp);
+            BitcaskFileEntry entry = populateFileEntry(key, value);
+            fileHandler.appendToActiveFile(entry.getBytes());
+            keyDir.put(key, valueMetadata);
+
+            handleActiveFileExceedThreshold();
+
+            // System.out.printf("Updated keyDir with key %s, and value %s\n", key.toString(), keyDir.get(key).toString());
+            // System.out.printf("Updated file %s with value %s\n", fileHandler.getCurrentFile().toString(), value);
+        } catch (IOException e) {
 //                System.out.println("ERROR: opening file...");
 //                System.out.println(e);
-            }
+        }
     }
 
     private void handleActiveFileExceedThreshold() {
@@ -119,7 +130,7 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
                 }
                 fileHandler.createNewActiveFile(newFileId);
 
-                if(fileHandler.getActiveFileId() > maxNumberOfFiles){
+                if(fileHandler.getNumberOfFiles() > maxNumberOfFiles){
                      Thread thread = new Thread(() -> merge());
                      thread.start();
                 }
@@ -131,11 +142,10 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
         }
     }
 
-    private ValueMetaData populateValueMetadata(String value) throws IOException {
+    private ValueMetaData populateValueMetadata(String value, long timestamp) throws IOException {
         String fileId = String.valueOf(fileHandler.getActiveFileId());
         int valueSz = value.length();
         int valuePos = (int) Files.size(fileHandler.getCurrentFile()); // assume that maxSize would not exceed 4GB
-        long timestamp = Instant.now().getEpochSecond();
 
         return new ValueMetaData(fileId, valueSz, valuePos, timestamp);
     }
@@ -153,48 +163,24 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
 
         Map<Integer, ValueMetaData> newKeyDir;
         try{
-            newKeyDir = generateMergedFile();
+            newKeyDir = generateMergedFile(activeFileId);
         } catch (IOException e){
             // rollback
 //            System.out.println("ERROR: could not merge files");
 //            System.out.println(e);
             return;
         }
-        HashSet<String> set = new HashSet<>();
-        for (Map.Entry<Integer, ValueMetaData> entry : keyDir.entrySet()) {
-            set.add(entry.getValue().fileId);
-        }
-        // merge the keydir
-        for (int i = activeFileId ; i > 0; i--) {
-            try {
-                if(set.contains(String.valueOf(i)))
-                    continue;
-                Files.delete(Path.of(fileHandler.getCurrentDirectory().toString() + '/' + i + ".bitcask"));
-                //System.out.println("Deleted file " + i);
-                Files.delete(Path.of(fileHandler.getCurrentDirectory().toString() + '/' + i + ".bitcask.hint"));
-            } catch (IOException e) {
-//                System.out.println(e);
-            }
-        }
-
-        // update active file id
-        try {
-            // Move (rename) the file
-            Path mergedFilePath = Path.of(fileHandler.getCurrentDirectory().toString() + "/merged.bitcask");
-            Path targetPath = Path.of(fileHandler.getCurrentDirectory().toString() + '/' + 1 + ".bitcask");
-            Files.move(mergedFilePath, targetPath, StandardCopyOption.ATOMIC_MOVE);
-            // System.out.println("File renamed successfully.");
-        } catch (IOException e) {
-//            System.err.println("Error occurred: " + e);
-        }
+        deleteUnusedFiles();
+        updateActiveFileId();
 
         synchronized (keyDir){
-            mergeKeyDir(newKeyDir, keyDir);
+            mergeKeyDir(newKeyDir, keyDir, activeFileId);
             fileHandler.setCurrentFile(Path.of(fileHandler.getCurrentDirectory().toString() + '/' + 1 + ".bitcask"));
         }
     }
 
-    private synchronized Map<Integer, ValueMetaData> generateMergedFile() throws IOException {
+
+    private synchronized Map<Integer, ValueMetaData> generateMergedFile(int activeFileId) throws IOException {
         // init a new keydir
         Map<Integer, ValueMetaData> newKeyDir = new HashMap<>();
 
@@ -215,7 +201,7 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
             ValueMetaData valueMetaData = entry.getValue();
 
             // process records which are not in the active file
-            if(valueMetaData.fileId.equals(String.valueOf(fileHandler.getActiveFileId()))) {
+            if(valueMetaData.fileId.equals(String.valueOf(activeFileId))) {
                 continue;
             }
 
@@ -240,15 +226,57 @@ public class BitCaskImpl implements Bitcask<Integer, String> {
         return newKeyDir;
     }
 
-    private void mergeKeyDir(Map<Integer, ValueMetaData> smallMap, Map<Integer, ValueMetaData> largeMap) {
+    private void deleteUnusedFiles() {
+        HashSet<String> CurrentFilesSet = new HashSet<>();
+        for (Map.Entry<Integer, ValueMetaData> entry : keyDir.entrySet()) {
+            CurrentFilesSet.add(entry.getValue().fileId);
+        }
+
+        try {
+            for (Path p : fileHandler.getAllFilesInDatabase()) {
+                try {
+                    String fileName = p.getFileName().toString();
+                    if(fileName.equals("merged.bitcask")) {
+                        continue;
+                    }
+                    int fileId = fileHandler.getFileId(fileName);
+
+                    if(CurrentFilesSet.contains(String.valueOf(fileId)))
+                        continue;
+
+                    Files.delete(Path.of(fileHandler.getCurrentDirectory().toString() + '/' + fileId + ".bitcask"));
+                    // System.out.println("Deleted file " + i);
+                    Files.delete(Path.of(fileHandler.getCurrentDirectory().toString() + '/' + fileId + ".bitcask.hint"));
+                } catch (IOException e) {
+                    // System.out.println(e);
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void updateActiveFileId() {
+        // update active file id
+        try {
+            // Move (rename) the file
+            Path mergedFilePath = Path.of(fileHandler.getCurrentDirectory().toString() + "/merged.bitcask");
+            Path targetPath = Path.of(fileHandler.getCurrentDirectory().toString() + '/' + 1 + ".bitcask");
+            Files.move(mergedFilePath, targetPath, StandardCopyOption.ATOMIC_MOVE);
+            // System.out.println("File renamed successfully.");
+        } catch (IOException e) {
+//            System.err.println("Error occurred: " + e);
+        }
+    }
+
+    private void mergeKeyDir(Map<Integer, ValueMetaData> smallMap, Map<Integer, ValueMetaData> largeMap, int activeFileId) {
         for (Map.Entry<Integer, ValueMetaData> entry : smallMap.entrySet()) {
-            if(largeMap.containsKey(entry.getKey())) {
+            if(largeMap.containsKey(entry.getKey()) && Integer.parseInt(largeMap.get(entry.getKey()).fileId) >= activeFileId) {
                 continue;
             }
             //System.out.printf("Merging key %s with old value %s to new value %s\n", entry.getKey(),
                     //largeMap.get(entry.getKey()).toString(), entry.getValue().toString());
             largeMap.put(entry.getKey(), entry.getValue());
-
         }
     }
 
