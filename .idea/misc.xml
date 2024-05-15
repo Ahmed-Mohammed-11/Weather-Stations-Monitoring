@@ -7,6 +7,7 @@
         <option value="$PROJECT_DIR$/weather-stations-monitoring/pom.xml" />
         <option value="$PROJECT_DIR$/BitCask/pom.xml" />
         <option value="$PROJECT_DIR$/kafka-processors/pom.xml" />
+        <option value="$PROJECT_DIR$/base-central-station/pom.xml" />
       </list>
     </option>
   </component>
