@@ -2,6 +2,7 @@ package org.example;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 
 public class BitcaskFileEntry {
     public long timestamp;
@@ -17,6 +18,12 @@ public class BitcaskFileEntry {
         this.valuesz = valuesz;
         this.key = key;
         this.value = value;
+    }
+
+    public static BitcaskFileEntry populateFileEntry(Integer key, String value, long timestamp) {
+        int keysz = 4;
+        int valuesz = value.length();
+        return new BitcaskFileEntry(timestamp, keysz, valuesz, key, value);
     }
 
     public int getNumberOfBytes(){

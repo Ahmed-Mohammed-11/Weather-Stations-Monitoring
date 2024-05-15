@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        Bitcask b = new BitCaskImpl(1, 10);
+        Bitcask b = new BitCaskImpl(1, 1);
         try {
             b.open("/home/omar/projects/data_intensive/Weather-Stations-Monitoring/BitCask/src/main/resources/");
         } catch (IOException e) {
@@ -33,6 +33,7 @@ public class Main {
 //                j=1;
 //        }
             b.put(1, m);
+            b.put(2, m);
 
 //        new Thread(() -> {
 //            for (int i = 0; i < 1e3; i++){
