@@ -1,6 +1,5 @@
-package org.example;
+package com.data.processors.BitCask;
 
-import com.data.Bitcask;
 
 import java.io.IOException;
 import java.nio.file.Files;

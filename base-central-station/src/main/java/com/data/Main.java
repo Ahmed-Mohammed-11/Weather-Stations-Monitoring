@@ -1,6 +1,8 @@
 package com.data;
 
-import com.data.processors.ParquetBackup;
+import com.data.processors.BitCask.BitCaskImpl;
+import com.data.processors.BitCask.Bitcask;
+import com.data.processors.Parquet.ParquetBackup;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -15,7 +17,7 @@ import java.util.Properties;
 import static com.data.constants.KafkaProps.*;
 
 public class Main {
-    private static final String outputPath = "base-central-station/src/main/java/com/data/Parquets/";
+    private static final String outputPath = "base-central-station/src/main/java/com/data/";
 
     private static Properties getProperties() {
         Properties props = new Properties();
@@ -30,7 +32,12 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         Properties props = getProperties();
-        ParquetBackup parquetBackup = new ParquetBackup(outputPath, 10);
+
+        ParquetBackup parquetBackup = new ParquetBackup(outputPath + "ParquetFiles/", 10);
+        Bitcask<Integer, String> bitcask = new BitCaskImpl(200, 5);
+        bitcask.open(outputPath + "BitcaskFiles");
+
+        System.out.println(bitcask.get(3));
 
         try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props)) {
             consumer.subscribe(Collections.singleton(TOPIC));
@@ -39,9 +46,13 @@ public class Main {
                 for (ConsumerRecord<String, String> record : records) {
                     System.out.println("Received ---> " + record.value());
                     System.out.println();
-                    String jj = record.value();
-                    JSONObject j = new JSONObject(jj);
-                    parquetBackup.archiveRecord(j);
+
+                    String msg = record.value();
+                    JSONObject json = new JSONObject(msg);
+                    int station_id = json.getInt("station_id");
+
+                    bitcask.put(station_id, msg);
+                    parquetBackup.archiveRecord(json);
                 }
             }
         }

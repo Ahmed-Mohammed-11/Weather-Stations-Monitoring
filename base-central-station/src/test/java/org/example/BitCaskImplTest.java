@@ -1,6 +1,7 @@
 package org.example;
 
-import com.data.Bitcask;
+import com.data.processors.BitCask.BitCaskImpl;
+import com.data.processors.BitCask.Bitcask;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -46,7 +47,7 @@ class BitCaskImplTest {
 
     @Test
     void testMultipleFiles_ShouldCreateNewFiles() {
-        BitCaskImpl b = new BitCaskImpl(1);
+        BitCaskImpl b = new BitCaskImpl(1, 10);
         try {
             b.open("src/test/java/org/example/test3");
         } catch (IOException e) {
@@ -65,7 +66,7 @@ class BitCaskImplTest {
     }
     @Test
     void manyRequestTest(){
-        BitCaskImpl b = new BitCaskImpl(10000);
+        BitCaskImpl b = new BitCaskImpl(10000, 5);
         int x = (int)1e6;
         try {
             b.open("src/test/java/org/example/testThreads");
