@@ -37,8 +37,6 @@ public class Main {
         BitCaskImpl bitcask = new BitCaskImpl(200, 5);
         bitcask.open(outputPath + "BitcaskFiles");
 
-        System.out.println(bitcask.get(1));
-
         try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props)) {
             consumer.subscribe(Collections.singleton(TOPIC));
             while (true) {

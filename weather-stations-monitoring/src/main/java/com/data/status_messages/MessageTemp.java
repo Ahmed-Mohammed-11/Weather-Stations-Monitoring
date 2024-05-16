@@ -25,7 +25,7 @@ public class MessageTemp {
                 "\"weather\": {" + "\n" +
                         "\"humidity\": "+ weather.humidity + ",\n" +
                         "\"temperature\": "+ weather.temp + ",\n" +
-                        "\"wind_speed\": "+ weather.wind_speed + ",\n" +
+                        "\"wind_speed\": "+ weather.wind_speed + "\n" +
                     "}" +
                 '}';
     }
