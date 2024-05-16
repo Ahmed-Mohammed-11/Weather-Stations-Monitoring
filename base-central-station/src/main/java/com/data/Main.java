@@ -34,10 +34,10 @@ public class Main {
         Properties props = getProperties();
 
         ParquetBackup parquetBackup = new ParquetBackup(outputPath + "ParquetFiles/", 10);
-        Bitcask<Integer, String> bitcask = new BitCaskImpl(200, 5);
+        BitCaskImpl bitcask = new BitCaskImpl(200, 5);
         bitcask.open(outputPath + "BitcaskFiles");
 
-        System.out.println(bitcask.get(3));
+        System.out.println(bitcask.get(1));
 
         try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props)) {
             consumer.subscribe(Collections.singleton(TOPIC));
@@ -50,8 +50,8 @@ public class Main {
                     String msg = record.value();
                     JSONObject json = new JSONObject(msg);
                     int station_id = json.getInt("station_id");
-
-                    bitcask.put(station_id, msg);
+                    long timestamp = json.getLong("status_timestamp");
+                    bitcask.put(station_id, msg, timestamp);
                     parquetBackup.archiveRecord(json);
                 }
             }

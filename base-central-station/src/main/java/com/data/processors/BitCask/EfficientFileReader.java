@@ -1,6 +1,7 @@
 package com.data.processors.BitCask;
 
 import java.io.*;
+import java.nio.ByteBuffer;
 
 public class EfficientFileReader {
     String path;
@@ -65,7 +66,9 @@ public class EfficientFileReader {
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
-        return getLong(buf);
+        ByteBuffer buffer = ByteBuffer.wrap(buf);
+
+        return buffer.getLong();
     }
 
     private long getLong(byte[] buf) {

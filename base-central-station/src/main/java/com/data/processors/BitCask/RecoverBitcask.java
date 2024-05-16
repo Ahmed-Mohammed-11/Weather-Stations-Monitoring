@@ -3,6 +3,7 @@ package com.data.processors.BitCask;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -45,10 +46,17 @@ public class RecoverBitcask {
         int currentPos = 0;
 
         while (fr.hasNext()) {
-            long timestamp = fr.getNextLong();
-            int keySize = fr.getNextInt();
-            int valueSz = fr.getNextInt();
-            int key = fr.getNextInt();
+            byte[] b = fr.getNext(8 + 4*3).buffer;
+            BitcaskFileEntry entry = BitcaskFileEntry.fromBytes(b);
+            long timestamp = entry.timestamp;
+            int keySize = entry.keysz;
+            int valueSz = entry.valuesz;
+            int key = entry.key;
+
+//            long timestamp = fr.getNextLong();
+//            int keySize = fr.getNextInt();
+//            int valueSz = fr.getNextInt();
+//            int key = fr.getNextInt();
 
             if (keyDir.get(key) == null || keyDir.get(key) != null && keyDir.get(key).timestamp <= timestamp) {
                 keyDir.put(key, new ValueMetaData(fileId, valueSz, currentPos, timestamp));
@@ -64,12 +72,16 @@ public class RecoverBitcask {
     private void recoverFromHintFile(Path hintFilePath, String fileId, Map<Integer, ValueMetaData> keyDir) throws IOException {
         EfficientFileReader fr = new EfficientFileReader(hintFilePath.toString(), 0);
         while (fr.hasNext()) {
-            int keySz = fr.getNextInt();
-            int valueSz = fr.getNextInt();
-            int valuePos = fr.getNextInt();
-            long timestamp = fr.getNextLong();
-            int key = fr.getNextInt();
-            keyDir.put(key, new ValueMetaData(fileId, valueSz, valuePos, timestamp));
+            byte[] b  = fr.getNext(8 + 4*4).buffer;
+            HintFileData h = HintFileData.fromBytes(b);
+//            long timestamp = fr.getNextLong();
+//            int keySz = fr.getNextInt();
+//            int valueSz = fr.getNextInt();
+//            int valuePos = fr.getNextInt();
+//            int key = fr.getNextInt();
+            if (keyDir.get(h.key) == null || keyDir.get(h.key) != null && keyDir.get(h.key).timestamp <= h.timestamp) {
+                keyDir.put(h.key, new ValueMetaData(fileId, h.valueSz, h.valuePos, h.timestamp));
+            }
         }
     }
 }

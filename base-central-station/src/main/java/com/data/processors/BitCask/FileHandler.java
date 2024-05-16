@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.List;
 
 public class FileHandler {
     private Path currentDirectory;
@@ -79,8 +80,16 @@ public class FileHandler {
         return Integer.parseInt(fileName.substring(0, fileName.indexOf('.')));
     }
 
+    public int getNumberOfFiles() throws IOException {
+        return (int) Files.list(currentDirectory).count();
+    }
+
     public Path getCurrentFile() {
         return currentFile;
+    }
+
+    public List<Path> getAllFilesInDatabase() throws IOException {
+        return Files.list(currentDirectory).toList();
     }
 
 

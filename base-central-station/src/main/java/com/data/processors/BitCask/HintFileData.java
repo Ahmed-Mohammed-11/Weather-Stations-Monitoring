@@ -18,11 +18,21 @@ public class HintFileData {
 
     public byte[] getBytes() {
         return ByteBuffer.allocate(4*4 + 8)
+                .putLong(timestamp)
                 .putInt(keySz)
                 .putInt(valueSz)
                 .putInt(valuePos)
-                .putLong(timestamp)
                 .putInt(key).array();
+    }
+
+    public static HintFileData fromBytes(byte[] bytes) {
+        ByteBuffer buffer = ByteBuffer.wrap(bytes);
+        long timestamp = buffer.getLong();
+        int keySz = buffer.getInt();
+        int valueSz = buffer.getInt();
+        int valuePos = buffer.getInt();
+        int key = buffer.getInt();
+        return new HintFileData(keySz, valueSz, valuePos, timestamp, key);
     }
 
     @Override

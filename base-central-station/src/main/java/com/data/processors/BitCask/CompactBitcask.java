@@ -1,6 +1,4 @@
-package org.example;
-
-import com.data.Bitcask;
+package com.data.processors.BitCask;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -76,7 +74,8 @@ public class CompactBitcask {
 
             // update the keyDir with the new metadata
             newKeyDir.put(key, newMetaData);
-
+            byte[] b = hintFileData.getBytes();
+            HintFileData h = HintFileData.fromBytes(b);
             // write that record in the hint file
             fileHandler.appendToFile(hintFilePath, hintFileData.getBytes());
         }
