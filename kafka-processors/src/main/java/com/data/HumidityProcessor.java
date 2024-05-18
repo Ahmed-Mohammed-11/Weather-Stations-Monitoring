@@ -29,14 +29,8 @@ public class HumidityProcessor {
         KStream<String, String> humidityStream = builder.stream(TOPIC_TO_CONSUME);
 
         humidityStream
-                .peek((key, value) -> logger.info("Before filter - Key: {}, Value: {}", key, value))
                 .filter((key, value) -> getHumidityFromJSON(value) > 70)
-                .peek((key, value) -> logger.info("After filter - Key: {}, Value: {}", key, value))
-                .map((key, value) -> {
-                    logger.info("Mapping - Key: {}, Value: {}", key, value);
-                    return KeyValue.pair(key, "RAIN ALERT: Humidity is now " + getHumidityFromJSON(value) + " From station " + key);
-                })
-                .peek((key, value) -> logger.info("After map - Key: {}, Value: {}", key, value))
+                .map((key, value) -> KeyValue.pair(key, "RAIN ALERT: Humidity is now " + getHumidityFromJSON(value) + " From station " + key))
                 .to(TOPIC_TO_PRODUCE_TO);
 
         
