@@ -1,0 +1,44 @@
+listeners:
+  client:
+    containerPort: 9092
+    protocol: PLAINTEXT
+    name: CLIENT
+    sslClientAuth: ""
+  controller:
+    name: CONTROLLER
+    containerPort: 9093
+    protocol: PLAINTEXT
+    sslClientAuth: ""
+  interbroker:
+    containerPort: 9094
+    protocol: PLAINTEXT
+    name: INTERNAL
+    sslClientAuth: ""
+  external:
+    containerPort: 9095
+    protocol: PLAINTEXT
+    name: EXTERNAL
+    sslClientAuth: ""
+  extraListeners: []
+
+sasl:
+  enabledMechanisms: ""
+  interBrokerMechanism: ""
+  controllerMechanism: ""
+  interbroker:
+    user: ""
+    password: ""
+    clientId: ""
+    clientSecret: ""
+  controller:
+    user: ""
+    password: ""
+    clientId: ""
+    clientSecret: ""
+  client:
+    users: []
+    passwords: []
+  zookeeper:
+    user: ""
+    password: ""
+

@@ -1,5 +1,8 @@
 package com.data.status_messages;
 
+import static com.data.constants.StatusMessage.*;
+import static com.data.utils.RandomGenerator.generateRandomIntUpper;
+
 public class MessageBuilder {
     int station_id;
     long s_no;
@@ -7,20 +10,36 @@ public class MessageBuilder {
     long timestamp;
     Weather weather;
 
-    public void setStationId(int station_id) { this.station_id = station_id; }
+    private static String getStatus() {
+        int randomInt = generateRandomIntUpper(100);
+        if (randomInt <= 30) return LOW;
+        else if (randomInt <= 70) return MEDIUM;
+        else return HIGH;
+    }
 
-    public void setSeqNo(long s_no) {
+    public MessageBuilder setStationId(int station_id) {
+        this.station_id = station_id;
+        return this;
+    }
+
+    public MessageBuilder setSeqNo(long s_no) {
         this.s_no = s_no;
+        return this;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public MessageBuilder setStatus() {
+        this.status = getStatus();
+        return this;
     }
 
-    public void setTimestamp(long timestamp) { this.timestamp = timestamp; }
+    public MessageBuilder setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+        return this;
+    }
 
-    public void setWeather(Weather weather) {
+    public MessageBuilder setWeather(Weather weather) {
         this.weather = weather;
+        return this;
     }
 
     public MessageTemp build() {

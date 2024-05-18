@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: consumer
+  name: consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: consumer
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        service: consumer
+    spec:
+      containers:
+        - image: central-station:latest
+          imagePullPolicy: Never
+          name: consumer
+          resources: {}
+      restartPolicy: Always

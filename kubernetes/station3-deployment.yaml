@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: station3
+  name: station3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: station3
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        service: station3
+    spec:
+      containers:
+        - env:
+            - name: STATION_ID
+              value: "3"
+          image: weather-station:latest
+          imagePullPolicy: Never
+          name: station3
+          resources: {}
+      restartPolicy: Always

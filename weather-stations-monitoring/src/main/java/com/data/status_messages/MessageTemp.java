@@ -18,15 +18,15 @@ public class MessageTemp {
     @Override
     public String toString() {
         return "{" +
-                "\"station_id\": " + stationId +  ",\n" +
+                "\"station_id\": " + stationId + ",\n" +
                 "\"status_timestamp\": " + timestamp + ",\n" +
                 "\"s_no\": " + seqNo + ",\n" +
                 "\"battery_status\": \"" + status + "\",\n" +
                 "\"weather\": {" + "\n" +
-                        "\"humidity\": "+ weather.humidity + ",\n" +
-                        "\"temperature\": "+ weather.temp + ",\n" +
-                        "\"wind_speed\": "+ weather.wind_speed + "\n" +
-                    "}" +
+                "\"humidity\": " + weather.humidity + ",\n" +
+                "\"temperature\": " + weather.temp + ",\n" +
+                "\"wind_speed\": " + weather.wind_speed + "\n" +
+                "}" +
                 '}';
     }
 }

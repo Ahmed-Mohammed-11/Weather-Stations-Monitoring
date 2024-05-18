@@ -17,7 +17,8 @@ import java.util.Properties;
 import static com.data.constants.KafkaProps.*;
 
 public class Main {
-    private static final String outputPath = "base-central-station/src/main/java/com/data/";
+//    private static final String outputPath = "base-central-station/src/main/java/com/data/";
+    private static final String outputPath = "";
 
     private static Properties getProperties() {
         Properties props = new Properties();
