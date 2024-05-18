@@ -85,3 +85,8 @@ services:
 
   consumer:
     image: "central-station:latest"
+
+  processors:
+    image: "humidity-processor:latest"
+    depends_on:
+      - kafka

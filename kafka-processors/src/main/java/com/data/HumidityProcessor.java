@@ -6,15 +6,17 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.KStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.data.constants.KafkaProps.*;
 
 public class HumidityProcessor {
+    private static final Logger logger = LoggerFactory.getLogger(HumidityProcessor.class);
+
     public static void main(String[] args) {
         Properties props = new Properties();
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, APP_ID);
@@ -26,13 +28,17 @@ public class HumidityProcessor {
         StreamsBuilder builder = new StreamsBuilder();
         KStream<String, String> humidityStream = builder.stream(TOPIC_TO_CONSUME);
 
-
         humidityStream
+                .peek((key, value) -> logger.info("Before filter - Key: {}, Value: {}", key, value))
                 .filter((key, value) -> getHumidityFromJSON(value) > 70)
-                .map((key, value) ->
-                        KeyValue.pair(key, "RAIN ALERT: Humidity is now " +
-                                getHumidityFromJSON(value) + " From station " + key))
+                .peek((key, value) -> logger.info("After filter - Key: {}, Value: {}", key, value))
+                .map((key, value) -> {
+                    logger.info("Mapping - Key: {}, Value: {}", key, value);
+                    return KeyValue.pair(key, "RAIN ALERT: Humidity is now " + getHumidityFromJSON(value) + " From station " + key);
+                })
+                .peek((key, value) -> logger.info("After map - Key: {}, Value: {}", key, value))
                 .to(TOPIC_TO_PRODUCE_TO);
+
         
         KafkaStreams streams = new KafkaStreams(builder.build(), props);
 
@@ -60,7 +66,6 @@ public class HumidityProcessor {
         ObjectMapper mapper = new ObjectMapper();
         try {
             Station station = mapper.readValue(value, Station.class);
-            System.out.println(station.toString());
             return station.getWeather().getHumidity();
         } catch (Exception e) {
             return 0;

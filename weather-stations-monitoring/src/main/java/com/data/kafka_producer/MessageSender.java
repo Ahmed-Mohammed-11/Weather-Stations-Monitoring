@@ -7,8 +7,8 @@ import static com.data.constants.KafkaProps.TOPIC;
 
 public class MessageSender {
 
-    public static void sendRecord(KafkaProducer producer, Object statusMessage) {
-        ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC, statusMessage.toString());
+    public static void sendRecord(KafkaProducer producer, String key, Object statusMessage) {
+        ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC, key, statusMessage.toString());
         producer.send(record, (metadata, exception) -> {
             if (exception != null) {
                 System.err.println("Error sending message: " + exception.getMessage());

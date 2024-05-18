@@ -38,7 +38,7 @@ public class Main {
                     sleep(TIME_OUT);
                     continue;
                 }
-                sendRecord(producer, statusMessage);
+                sendRecord(producer, String.valueOf(stationId), statusMessage);
                 sleep(TIME_OUT);
             }
         }
