@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: consumer-volume
+  name: central-station-volume0
   labels:
     type: local
 spec:
@@ -14,17 +14,18 @@ spec:
     path: "/home/ahmed/DDIA/final_project/Weather-Stations-Monitoring/base-central-station/ParquetFiles/"
 
 ---
-#
-#apiVersion: v1
-#kind: PersistentVolume
-#metadata:
-#  name: pv-bitcask
-#  labels:
-#    type: local
-#spec:
-#  capacity:
-#    storage: 500Mi
-#  accessModes:
-#    - ReadWriteMany
-#  hostPath:
-#    path: /home/ahmed/DDIA/final_project/Weather-Stations-Monitoring/base-central-station/BitcaskFiles/
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: central-station-volume1
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 500Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/home/ahmed/DDIA/final_project/Weather-Stations-Monitoring/base-central-station/BitcaskFiles/"

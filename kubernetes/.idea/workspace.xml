@@ -5,26 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7b886606-e81d-476f-8561-ad83b491a29c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../kafka-processors/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/central-station-volume-claim.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/central-station-volume.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/processors-deployment.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../base-central-station/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/../base-central-station/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../base-central-station/out/artifacts/base_central_station_jar/base-central-station.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../base-central-station/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../base-central-station/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../base-central-station/src/main/java/com/data/processors/BitCask/BitCaskImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../base-central-station/src/main/java/com/data/processors/BitCask/BitCaskImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../base-central-station/src/test/java/org/example/test3/Bitcask/3.bitcask" beforeDir="false" afterPath="$PROJECT_DIR$/../base-central-station/src/test/java/org/example/test3/Bitcask/3.bitcask" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../base-central-station/src/test/java/org/example/test3/Bitcask/4.bitcask" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../base-central-station/src/test/java/org/example/test3/Bitcask/5.bitcask" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../base-central-station/src/test/java/org/example/testThreads/Bitcask/12.bitcask" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../base-central-station/src/test/java/org/example/testThreads/Bitcask/16.bitcask" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../base-central-station/src/test/java/org/example/testThreads/Bitcask/6.bitcask" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../base-central-station/src/test/java/org/example/testThreads/Bitcask/8.bitcask" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../base-central-station/src/test/java/org/example/testThreads/Bitcask/9.bitcask" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central-station-volume-claim.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/central-station-volume-claim.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central-station-volume.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/central-station-volume.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/consumer-deployment.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/consumer-deployment.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kubernetes.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../weather-stations-monitoring/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../weather-stations-monitoring/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +70,7 @@
       <workItem from="1716049417154" duration="359000" />
       <workItem from="1716202553826" duration="1085000" />
       <workItem from="1716204300836" duration="8480000" />
-      <workItem from="1716225483629" duration="2173000" />
+      <workItem from="1716225483629" duration="2913000" />
     </task>
     <servers />
   </component>
