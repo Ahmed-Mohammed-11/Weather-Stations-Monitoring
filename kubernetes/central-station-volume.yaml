@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: consumer-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 500Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/home/ahmed/DDIA/final_project/Weather-Stations-Monitoring/base-central-station/ParquetFiles/"
+
+---
+#
+#apiVersion: v1
+#kind: PersistentVolume
+#metadata:
+#  name: pv-bitcask
+#  labels:
+#    type: local
+#spec:
+#  capacity:
+#    storage: 500Mi
+#  accessModes:
+#    - ReadWriteMany
+#  hostPath:
+#    path: /home/ahmed/DDIA/final_project/Weather-Stations-Monitoring/base-central-station/BitcaskFiles/

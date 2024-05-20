@@ -2,8 +2,8 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   labels:
-    service: consumer-claim0
-  name: consumer-claim0
+    service: consumer-claim
+  name: consumer-claim
 spec:
   accessModes:
     - ReadWriteOnce
@@ -11,17 +11,16 @@ spec:
     requests:
       storage: 500Mi
 
----
 
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  labels:
-    service: consumer-claim1
-  name: consumer-claim1
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 500Mi
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  labels:
+#    service: consumer-claim1
+#  name: consumer-claim1
+#spec:
+#  accessModes:
+#    - ReadWriteOnce
+#  resources:
+#    requests:
+#      storage: 500Mi

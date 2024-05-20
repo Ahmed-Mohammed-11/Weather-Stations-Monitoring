@@ -26,7 +26,7 @@ services:
       - kafka
     environment:
       - STATION_ID=2
-        
+
   station3:
     image: 'weather-station:latest'
     depends_on:
@@ -54,7 +54,7 @@ services:
       - kafka
     environment:
       - STATION_ID=6
-      
+
   station7:
     image: 'weather-station:latest'
     depends_on:
@@ -85,6 +85,9 @@ services:
 
   consumer:
     image: "central-station:latest"
+    volumes:
+      - /home/ahmed/DDIA/final_project/Weather-Stations-Monitoring/base-central-station/ParquetFiles/:/tmp/ParquetFiles/
+      - /home/ahmed/DDIA/final_project/Weather-Stations-Monitoring/base-central-station/BitcaskFiles/:/tmp/BitcaskFiles/
 
   processors:
     image: "humidity-processor:latest"

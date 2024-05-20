@@ -9,15 +9,25 @@ spec:
   selector:
     matchLabels:
       service: consumer
-  strategy: {}
   template:
     metadata:
       labels:
         service: consumer
     spec:
+      volumes:
+        - name: consumer-volume
+          persistentVolumeClaim:
+            claimName: consumer-claim
       containers:
         - image: central-station:latest
           imagePullPolicy: Never
           name: consumer
-          resources: {}
-      restartPolicy: Always
+          volumeMounts:
+            - mountPath: /tmp/ParquetFiles/
+              name: consumer-volume
+#            - mountPath: /tmp/BitcaskFiles/
+#              name: consumer-claim1
+
+#        - name: consumer-claim1
+#          persistentVolumeClaim:
+#            claimName: consumer-claim1
