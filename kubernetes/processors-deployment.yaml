@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: processors
+  name: processors
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: processors
+  template:
+    metadata:
+      labels:
+        service: processors
+    spec:
+      containers:
+        - image: humidity-processor:latest
+          name: processors
+          imagePullPolicy: Never
+          resources: {}
+      restartPolicy: Always

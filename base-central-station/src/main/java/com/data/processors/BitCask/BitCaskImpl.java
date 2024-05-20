@@ -8,9 +8,6 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-// TODO Cross-cutting concerns (logging)
-// TODO Configuration files
-// TODO Dockerize the library
 public class BitCaskImpl implements Bitcask<Integer, String> {
     private Map<Integer, ValueMetaData> keyDir;
     private final int sizeThreshold;
