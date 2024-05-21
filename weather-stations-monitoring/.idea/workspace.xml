@@ -13,9 +13,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4eaef3d4-36c9-40b8-aefa-43224ebdf8e7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../kafka-processors/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../base-central-station/out/artifacts/base_central_station_jar/base-central-station.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../base-central-station/out/artifacts/base_central_station_jar/base-central-station.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../base-central-station/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../base-central-station/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../base-central-station/src/main/java/com/data/constants/KafkaProps.java" beforeDir="false" afterPath="$PROJECT_DIR$/../base-central-station/src/main/java/com/data/constants/KafkaProps.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../base-central-station/src/main/java/com/data/processors/BitCask/CompactBitcask.java" beforeDir="false" afterPath="$PROJECT_DIR$/../base-central-station/src/main/java/com/data/processors/BitCask/CompactBitcask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../base-central-station/src/main/java/com/data/processors/Parquet/ParquetBackup.java" beforeDir="false" afterPath="$PROJECT_DIR$/../base-central-station/src/main/java/com/data/processors/Parquet/ParquetBackup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kubernetes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../kubernetes/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kubernetes/central-station-volume-claim.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../kubernetes/central-station-volume-claim.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kubernetes/central-station-volume.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../kubernetes/central-station-volume.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kubernetes/consumer-deployment.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../kubernetes/consumer-deployment.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../kubernetes/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../kubernetes/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -142,6 +146,7 @@
       <workItem from="1716031114058" duration="2330000" />
       <workItem from="1716033900255" duration="268000" />
       <workItem from="1716214971242" duration="12000" />
+      <workItem from="1716280055841" duration="2233000" />
     </task>
     <servers />
   </component>

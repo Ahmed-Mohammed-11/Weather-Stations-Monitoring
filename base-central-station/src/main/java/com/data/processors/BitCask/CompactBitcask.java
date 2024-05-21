@@ -9,8 +9,8 @@ import java.util.HashSet;
 import java.util.Map;
 
 public class CompactBitcask {
-    private Bitcask<Integer, String> bitCask;
-    private FileHandler fileHandler;
+    private final Bitcask<Integer, String> bitCask;
+    private final FileHandler fileHandler;
 
     public CompactBitcask(Bitcask<Integer, String> bitCask, FileHandler fileHandler) {
         this.bitCask = bitCask;

@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class ParquetBackup {
     private static int NOStations;
     private static Schema schema;
-    private static final int BATCH_SIZE = 10 ;//* 1024;
+    private static final int BATCH_SIZE = 10 ; // * 1024;
     private static String parquetsPath;
     private final BlockingQueue<GenericData.Record>[] buffers;
 

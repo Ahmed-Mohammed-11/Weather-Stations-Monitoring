@@ -6,6 +6,7 @@ import com.data.status_messages.Weather;
 import org.apache.kafka.clients.producer.KafkaProducer;
 
 import java.util.Properties;
+import java.util.concurrent.Executors;
 
 import static com.data.constants.KafkaProps.TIME_OUT;
 import static com.data.constants.StatusMessage.STATION_SEQ_NUM_LOWER_BOUND;
@@ -40,6 +41,7 @@ public class Main {
                 }
                 sendRecord(producer, String.valueOf(stationId), statusMessage);
                 sleep(TIME_OUT);
+//                Executors.newScheduledThreadPool(10).schedule()
             }
         }
     }
