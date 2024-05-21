@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -9,170 +8,109 @@
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients -->
+        <!-- Kafka Clients -->
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
-            <version>3.7.0</version>
+            <version>3.4.0</version>
         </dependency>
 
+        <!-- Commons IO -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-io</artifactId>
             <version>1.3.2</version>
         </dependency>
 
-        <!-- Avro & Hadoop  -->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.avro</groupId>-->
-<!--            <artifactId>avro</artifactId>-->
-<!--            <version>1.8.2</version>-->
-<!--        </dependency>-->
+        <!-- Avro -->
         <dependency>
             <groupId>org.apache.avro</groupId>
             <artifactId>avro</artifactId>
-            <version>1.11.1</version>
+            <version>1.8.2</version>
         </dependency>
 
+        <!-- Hadoop Dependencies -->
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-common</artifactId>
-            <version>3.0.0</version>
+            <version>3.3.5</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-core</artifactId>
-            <version>1.2.1</version>
+            <artifactId>hadoop-hdfs</artifactId>
+            <version>3.3.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-mapreduce-client-core</artifactId>
+            <version>3.3.5</version>
         </dependency>
 
-        <!-- Parquet  -->
+        <!-- Parquet Dependencies -->
         <dependency>
             <groupId>org.apache.parquet</groupId>
             <artifactId>parquet-avro</artifactId>
-            <version>1.10.0</version>
+            <version>1.13.0</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.apache.parquet</groupId>
-            <artifactId>parquet-column</artifactId>
-            <version>1.10.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.parquet</groupId>
-            <artifactId>parquet-common</artifactId>
-            <version>1.10.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.parquet</groupId>
-            <artifactId>parquet-encoding</artifactId>
-            <version>1.10.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.parquet</groupId>
-            <artifactId>parquet-format</artifactId>
-            <version>2.6.0</version>
-        </dependency>
-
         <dependency>
             <groupId>org.apache.parquet</groupId>
             <artifactId>parquet-hadoop</artifactId>
-            <version>1.10.0</version>
+            <version>1.13.0</version>
         </dependency>
 
+        <!-- JSON -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20180813</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-client</artifactId>
-            <version>${hadoop.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang3.version}</version>
-        </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>org.apache.parquet</groupId>-->
-<!--            <artifactId>parquet-avro</artifactId>-->
-<!--            <version>${parquet.version}</version>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>org.apache.parquet</groupId>-->
-<!--            <artifactId>parquet-hadoop</artifactId>-->
-<!--            <version>${parquet.version}</version>-->
-<!--        </dependency>-->
-
+        <!-- HBase Dependencies -->
         <dependency>
             <groupId>org.apache.hbase</groupId>
             <artifactId>hbase-client</artifactId>
-            <version>${hbase.version}</version>
-            <scope>${scope}</scope>
+            <version>1.2.0</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.hbase</groupId>
             <artifactId>hbase-common</artifactId>
-            <version>${hbase.version}</version>
-            <scope>${scope}</scope>
+            <version>1.2.0</version>
         </dependency>
 
+        <!-- SLF4J -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
+            <version>1.7.21</version>
         </dependency>
 
+        <!-- JUnit -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.junit.jupiter</groupId>-->
-<!--            <artifactId>junit-jupiter</artifactId>-->
-<!--            <version>RELEASE</version>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>5.9.2</version>
             <scope>test</scope>
         </dependency>
-
-
     </dependencies>
 
-
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <java.version>1.8</java.version>
-
-        <hadoop.version>2.8.0</hadoop.version>
+        <hadoop.version>3.3.5</hadoop.version>
         <hbase.version>1.2.0</hbase.version>
-        <parquet.version>1.8.1</parquet.version>
-
+        <parquet.version>1.13.0</parquet.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
-
         <slf4j.version>1.7.21</slf4j.version>
     </properties>
-
     <build>
         <plugins>
             <plugin>
@@ -187,7 +125,8 @@
                         </goals>
                         <configuration>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>com.data.Main</mainClass>
                                 </transformer>
                             </transformers>
@@ -197,5 +136,220 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
+
+
+
+
+
+
+
+
+
+
+
+        <!--<?xml version="1.0" encoding="UTF-8"?>-->
+        <!--<project xmlns="http://maven.apache.org/POM/4.0.0"-->
+        <!--         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+        <!--         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">-->
+        <!--    <modelVersion>4.0.0</modelVersion>-->
+
+        <!--    <groupId>com.data</groupId>-->
+        <!--    <artifactId>base-central-station</artifactId>-->
+        <!--    <version>1.0-SNAPSHOT</version>-->
+
+        <!--    <dependencies>-->
+        <!--        &lt;!&ndash; Kafka Clients &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.kafka</groupId>-->
+        <!--            <artifactId>kafka-clients</artifactId>-->
+        <!--            <version>3.4.0</version>-->
+        <!--        </dependency>-->
+
+        <!--        &lt;!&ndash; Commons IO &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.commons</groupId>-->
+        <!--            <artifactId>commons-io</artifactId>-->
+        <!--            <version>1.3.2</version>-->
+        <!--        </dependency>-->
+
+        <!--        &lt;!&ndash; Avro &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.avro</groupId>-->
+        <!--            <artifactId>avro</artifactId>-->
+        <!--            <version>1.8.2</version>-->
+        <!--        </dependency>-->
+
+        <!--        &lt;!&ndash; Hadoop Dependencies &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.hadoop</groupId>-->
+        <!--            <artifactId>hadoop-common</artifactId>-->
+        <!--            <version>3.3.5</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.hadoop</groupId>-->
+        <!--            <artifactId>hadoop-hdfs</artifactId>-->
+        <!--            <version>3.3.5</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.hadoop</groupId>-->
+        <!--            <artifactId>hadoop-mapreduce-client-core</artifactId>-->
+        <!--            <version>3.3.5</version>-->
+        <!--        </dependency>-->
+
+        <!--        &lt;!&ndash; Parquet Dependencies &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.parquet</groupId>-->
+        <!--            <artifactId>parquet-avro</artifactId>-->
+        <!--            <version>1.13.0</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.parquet</groupId>-->
+        <!--            <artifactId>parquet-hadoop</artifactId>-->
+        <!--            <version>1.13.0</version>-->
+        <!--        </dependency>-->
+
+        <!--        &lt;!&ndash; JSON &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.json</groupId>-->
+        <!--            <artifactId>json</artifactId>-->
+        <!--            <version>20180813</version>-->
+        <!--        </dependency>-->
+
+        <!--        &lt;!&ndash; HBase Dependencies &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.hbase</groupId>-->
+        <!--            <artifactId>hbase-client</artifactId>-->
+        <!--            <version>1.2.0</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.hbase</groupId>-->
+        <!--            <artifactId>hbase-common</artifactId>-->
+        <!--            <version>1.2.0</version>-->
+        <!--        </dependency>-->
+
+        <!--        &lt;!&ndash; SLF4J &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.slf4j</groupId>-->
+        <!--            <artifactId>slf4j-api</artifactId>-->
+        <!--            <version>1.7.21</version>-->
+        <!--        </dependency>-->
+
+        <!--        &lt;!&ndash; JUnit &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>junit</groupId>-->
+        <!--            <artifactId>junit</artifactId>-->
+        <!--            <version>4.12</version>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.junit.jupiter</groupId>-->
+        <!--            <artifactId>junit-jupiter-engine</artifactId>-->
+        <!--            <version>5.9.2</version>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
+        <!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients &ndash;&gt;-->
+
+        <!--        &lt;!&ndash; Avro & Hadoop  &ndash;&gt;-->
+
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.hadoop</groupId>-->
+        <!--            <artifactId>hadoop-core</artifactId>-->
+        <!--            <version>1.2.1</version>-->
+        <!--        </dependency>-->
+
+
+        <!--&lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <groupId>org.apache.parquet</groupId>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <artifactId>parquet-column</artifactId>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <version>1.10.0</version>&ndash;&gt;-->
+        <!--&lt;!&ndash;        </dependency>&ndash;&gt;-->
+
+        <!--&lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <groupId>org.apache.parquet</groupId>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <artifactId>parquet-common</artifactId>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <version>1.10.0</version>&ndash;&gt;-->
+        <!--&lt;!&ndash;        </dependency>&ndash;&gt;-->
+
+        <!--&lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <groupId>org.apache.parquet</groupId>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <artifactId>parquet-encoding</artifactId>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <version>1.10.0</version>&ndash;&gt;-->
+        <!--&lt;!&ndash;        </dependency>&ndash;&gt;-->
+
+        <!--&lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <groupId>org.apache.parquet</groupId>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <artifactId>parquet-format</artifactId>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <version>2.6.0</version>&ndash;&gt;-->
+        <!--&lt;!&ndash;        </dependency>&ndash;&gt;-->
+
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.hadoop</groupId>-->
+        <!--            <artifactId>hadoop-client</artifactId>-->
+        <!--            <version>${hadoop.version}</version>-->
+        <!--        </dependency>-->
+
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.commons</groupId>-->
+        <!--            <artifactId>commons-lang3</artifactId>-->
+        <!--            <version>${commons-lang3.version}</version>-->
+        <!--        </dependency>-->
+
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.hbase</groupId>-->
+        <!--            <artifactId>hbase-client</artifactId>-->
+        <!--            <version>${hbase.version}</version>-->
+        <!--            <scope>${scope}</scope>-->
+        <!--        </dependency>-->
+
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.hbase</groupId>-->
+        <!--            <artifactId>hbase-common</artifactId>-->
+        <!--            <version>${hbase.version}</version>-->
+        <!--            <scope>${scope}</scope>-->
+        <!--        </dependency>-->
+
+        <!--    </dependencies>-->
+
+
+        <!--    <properties>-->
+        <!--        <maven.compiler.source>21</maven.compiler.source>-->
+        <!--        <maven.compiler.target>21</maven.compiler.target>-->
+        <!--        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
+
+        <!--        <java.version>1.8</java.version>-->
+
+        <!--        <java.version>1.8</java.version>-->
+        <!--        <hadoop.version>3.3.5</hadoop.version>-->
+        <!--        <hbase.version>1.2.0</hbase.version>-->
+        <!--        <parquet.version>1.13.0</parquet.version>-->
+        <!--        <commons-lang3.version>3.3.2</commons-lang3.version>-->
+        <!--        <slf4j.version>1.7.21</slf4j.version>-->
+        <!--    </properties>-->
+
+        <!--    <build>-->
+        <!--        <plugins>-->
+        <!--            <plugin>-->
+        <!--                <groupId>org.apache.maven.plugins</groupId>-->
+        <!--                <artifactId>maven-shade-plugin</artifactId>-->
+        <!--                <version>3.5.3</version>-->
+        <!--                <executions>-->
+        <!--                    <execution>-->
+        <!--                        <phase>package</phase>-->
+        <!--                        <goals>-->
+        <!--                            <goal>shade</goal>-->
+        <!--                        </goals>-->
+        <!--                        <configuration>-->
+        <!--                            <transformers>-->
+        <!--                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
+        <!--                                    <mainClass>com.data.Main</mainClass>-->
+        <!--                                </transformer>-->
+        <!--                            </transformers>-->
+        <!--                        </configuration>-->
+        <!--                    </execution>-->
+        <!--                </executions>-->
+        <!--            </plugin>-->
+        <!--        </plugins>-->
+        <!--    </build>-->
+
+        <!--</project>-->

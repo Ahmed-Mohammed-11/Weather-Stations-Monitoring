@@ -115,6 +115,7 @@ public class ParquetBackup {
             while ((record = batch.poll(100, TimeUnit.MILLISECONDS)) != null) {
                 writer.write(record);
             }
+            writer.close();
             System.out.println("--------Batch written-------");
         } catch (Exception e) {
             e.printStackTrace();
