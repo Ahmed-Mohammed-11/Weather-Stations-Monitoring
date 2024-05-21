@@ -15,20 +15,20 @@ spec:
         service: consumer
     spec:
       volumes:
-        - name: consumer-volume0
+        - name: parquet-files-volume
           persistentVolumeClaim:
-            claimName: consumer-claim0
-        - name: consumer-volume1
+            claimName: pv0
+        - name: bitcask-files-volume
           persistentVolumeClaim:
-            claimName: consumer-claim1
+            claimName: pv1
       containers:
         - image: central-station:latest
           imagePullPolicy: Never
           name: consumer
           volumeMounts:
             - mountPath: "/tmp/ParquetFiles/"
-              name: consumer-volume0
+              name: parquet-files-volume
             - mountPath: "/tmp/BitcaskFiles/"
-              name: consumer-volume1
+              name: bitcask-files-volume
 
        

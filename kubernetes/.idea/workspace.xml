@@ -5,10 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7b886606-e81d-476f-8561-ad83b491a29c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../base-central-station/src/main/java/com/data/constants/KafkaProps.java" beforeDir="false" afterPath="$PROJECT_DIR$/../base-central-station/src/main/java/com/data/constants/KafkaProps.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../base-central-station/src/main/java/com/data/processors/BitCask/CompactBitcask.java" beforeDir="false" afterPath="$PROJECT_DIR$/../base-central-station/src/main/java/com/data/processors/BitCask/CompactBitcask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../base-central-station/src/main/java/com/data/processors/Parquet/ParquetBackup.java" beforeDir="false" afterPath="$PROJECT_DIR$/../base-central-station/src/main/java/com/data/processors/Parquet/ParquetBackup.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/central-station-volume-claim.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/central-station-volume-claim.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/central-station-volume.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/central-station-volume.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/consumer-deployment.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/consumer-deployment.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../weather-stations-monitoring/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../weather-stations-monitoring/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../weather-stations-monitoring/src/main/java/com/data/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../weather-stations-monitoring/src/main/java/com/data/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,21 +33,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/ahmed/DDIA/final_project/Weather-Stations-Monitoring/base-central-station&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/ahmed/DDIA/final_project/Weather-Stations-Monitoring/weather-stations-monitoring",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -71,6 +77,7 @@
       <workItem from="1716202553826" duration="1085000" />
       <workItem from="1716204300836" duration="8480000" />
       <workItem from="1716225483629" duration="2913000" />
+      <workItem from="1716269472425" duration="9967000" />
     </task>
     <servers />
   </component>

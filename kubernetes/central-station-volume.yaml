@@ -1,31 +1,27 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: central-station-volume0
-  labels:
-    type: local
+  name: pv0
 spec:
-  storageClassName: manual
   capacity:
-    storage: 500Mi
+    storage: 4Gi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   hostPath:
     path: "/home/ahmed/DDIA/final_project/Weather-Stations-Monitoring/base-central-station/ParquetFiles/"
+  storageClassName: standard
 
 ---
 
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: central-station-volume1
-  labels:
-    type: local
+  name: pv1
 spec:
-  storageClassName: manual
   capacity:
-    storage: 500Mi
+    storage: 4Gi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   hostPath:
     path: "/home/ahmed/DDIA/final_project/Weather-Stations-Monitoring/base-central-station/BitcaskFiles/"
+  storageClassName: standard
